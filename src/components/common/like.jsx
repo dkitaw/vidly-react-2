@@ -7,8 +7,8 @@ const Like = ({ liked, onClick }) => {
   const isLiked = liked ? farHeart : fasHeart;
 
   return (
-    <div onClick={onClick}>
-      <FontAwesomeIcon icon={isLiked} style={{ cursor: "pointer" }} />
+    <div>
+      <FontAwesomeIcon icon={isLiked} className="clickable" onClick={onClick} />
     </div>
   );
 };
