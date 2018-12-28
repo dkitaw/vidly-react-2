@@ -20,7 +20,7 @@ class Movies extends Component {
   componentDidMount() {
     const allGenres = { _id: "", name: "All Genres" };
     const genres = [allGenres, ...getGenres()];
-    this.setState({ movies: getMovies(), genres, selectedGenre: allGenres });
+    this.setState({ movies: getMovies(), genres });
   }
 
   handleDelete = movie => {
