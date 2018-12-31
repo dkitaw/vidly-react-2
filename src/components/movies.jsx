@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { getMovies } from "../services/fakeMovieService";
+import { toast } from "react-toastify";
+import { getMovies, deleteMovie } from "../services/movieService";
 import { getGenres } from "../services/genreService";
 import MoviesTable from "./moviesTable";
 import SearchBox from "./common/searchBox";
@@ -24,14 +25,26 @@ class Movies extends Component {
     const allGenres = { _id: "", name: "All Genres" };
     const data = await getGenres();
     const genres = [allGenres, ...data];
-    this.setState({ movies: getMovies(), genres });
+    const movies = await getMovies();
+    this.setState({ movies, genres });
   }
 
-  handleDelete = movie => {
+  handleDelete = async movie => {
+    let originalMovies;
     this.setState(prevState => {
-      const movies = prevState.movies.filter(m => m._id !== movie._id);
+      originalMovies = prevState.movies;
+      const movies = originalMovies.filter(m => m._id !== movie._id);
       return { movies };
     });
+
+    try {
+      await deleteMovie(movie._id);
+    } catch (ex) {
+      if (ex.response && ex.response.status === 404)
+        toast.error("This movie has already been deleted");
+
+      this.setState({ movies: originalMovies });
+    }
   };
 
   handleLike = movie => {
@@ -57,7 +70,6 @@ class Movies extends Component {
   };
 
   handleSearch = query => {
-    console.log("Search", query);
     this.setState({ searchQuery: query, selectedGenre: null, currentPage: 1 });
   };
 
