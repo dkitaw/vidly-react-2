@@ -9,13 +9,27 @@ export const getMovies = async () => {
 };
 
 export const getMovie = async movieId => {
-  const { data: movie } = await http.get(`${apiEndpoint}/${movieId}`);
+  const { data: movie } = await http.get(movieUrl(movieId));
   return movie;
 };
 
-export const saveMovie = async movie => {};
+export const saveMovie = async movie => {
+  if (movie._id) {
+    const body = { ...movie };
+    delete body._id;
+    const { data } = await http.put(movieUrl(movie._id), body);
+    return data;
+  }
+
+  const { data } = await http.post(apiEndpoint, movie);
+  return data;
+};
 
 export const deleteMovie = async movieId => {
-  const { data: movie } = await http.delete(`${apiEndpoint}/${movieId}`);
+  const { data: movie } = await http.delete(movieUrl(movieId));
   return movie;
+};
+
+const movieUrl = movieId => {
+  return `${apiEndpoint}/${movieId}`;
 };
