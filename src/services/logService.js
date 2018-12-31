@@ -1,6 +1,4 @@
-const init = () => {
-  console.log("Init logger service");
-};
+const init = () => {};
 
 const error = error => {
   console.error(error);
