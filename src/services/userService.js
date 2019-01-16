@@ -1,7 +1,6 @@
 import http from "../services/httpService";
-import { apiURL } from "../config.json";
 
-const apiEndpoint = `${apiURL}/users`;
+const apiEndpoint = "/users";
 
 export const register = async user => {
   return await http.post(apiEndpoint, {
