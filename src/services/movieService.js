@@ -1,7 +1,6 @@
 import http from "../services/httpService";
-import { apiURL } from "../config.json";
 
-const apiEndpoint = `${apiURL}/movies`;
+const apiEndpoint = "/movies";
 
 export const getMovies = async () => {
   const { data: movies } = await http.get(apiEndpoint);
