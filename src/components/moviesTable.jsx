@@ -3,8 +3,10 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import Like from "./common/like";
 import Table from "./common/table";
+import auth from "../services/authService";
 
 class MoviesTable extends Component {
+  user = auth.getCurrentUser();
   columns = [
     {
       path: "title",
@@ -22,15 +24,17 @@ class MoviesTable extends Component {
     },
     {
       key: "delete",
-      content: movie => (
-        <button
-          type="button"
-          className="btn btn-danger btn-sm"
-          onClick={() => this.props.onDelete(movie)}
-        >
-          Delete
-        </button>
-      )
+      content: movie =>
+        this.user &&
+        this.user.isAdmin && (
+          <button
+            type="button"
+            className="btn btn-danger btn-sm"
+            onClick={() => this.props.onDelete(movie)}
+          >
+            Delete
+          </button>
+        )
     }
   ];
 
